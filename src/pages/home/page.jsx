@@ -5,6 +5,7 @@ import HeroSection from './components/HeroSection';
 import CategorySection from './components/CategorySection';
 import BestsellerSection from './components/BestsellerSection';
 import FeaturesSection from './components/FeaturesSection';
+import NewarrivalSection from './components/NewarrivalSection';
 
 export default function Home() {
   return (
@@ -12,9 +13,11 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <CategorySection />
+        {/* <CategorySection /> */}
         <BestsellerSection />
-        <FeaturesSection />
+        <NewarrivalSection />
+        <NewarrivalSection />
+        {/* <FeaturesSection /> */}
       </main>
       <Footer />
     </div>
