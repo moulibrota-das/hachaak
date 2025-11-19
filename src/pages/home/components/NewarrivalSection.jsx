@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Card from "../../../components/base/Card";
 
-function NewarrivalSection() {
+function NewarrivalSection({headerText = "New Arrivals"}) {
   const products = [
     {
       id: 1,
@@ -63,12 +63,12 @@ function NewarrivalSection() {
     },
   ];
   return (
-    <section className="py-12 px-4 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 sm:py-16  bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-            New Arrivals
+            {headerText}
           </h2>
           <a
             href="#"
@@ -85,7 +85,7 @@ function NewarrivalSection() {
           <div className=" overflow-x-auto scrollbar-hide -mx-4 px-4">
             <div className="flex gap-8 pb-4">
               {products.map((product) => (
-                <div key={product.id} className="flex-shrink-0 w-[280px]">
+                <div key={product.id} className="flex-shrink-0 w-[240px] lg:w-[280px]">
                   <Card product={product} />
                 </div>
               ))}

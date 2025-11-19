@@ -27,17 +27,17 @@ export default function CategorySection() {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        {/* <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Shop by Category</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Explore our carefully curated collection of premium streetwear essentials
           </p>
-        </div>
+        </div> */}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-8 items-center justify-items-center">
           {categories.map((category) => (
-            <div key={category.id} className="group cursor-pointer" data-product-shop>
-              <div className="relative overflow-hidden rounded-lg bg-gray-100 aspect-[4/5] mb-4">
+            <div key={category.id} className="group cursor-pointer w-32 lg:w-64" data-product-shop>
+              <div className="relative overflow-hidden rounded-lg bg-gray-100 aspect-[16/9] mb-4">
                 <img
                   src={category.image}
                   alt={category.name}
@@ -45,7 +45,7 @@ export default function CategorySection() {
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.name}</h3>
+              {/* <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.name}</h3>
               <p className="text-gray-600 mb-4">{category.description}</p>
               <a 
                 href={category.href}
@@ -53,7 +53,7 @@ export default function CategorySection() {
               >
                 Shop Now
                 <i className="ri-arrow-right-line ml-2"></i>
-              </a>
+              </a> */}
             </div>
           ))}
         </div>

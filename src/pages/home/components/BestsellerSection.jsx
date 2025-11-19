@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Card from "../../../components/base/Card";
+import { ArrowRight } from "lucide-react";
 
 export default function BestsellerSection() {
   const [activeTab, setActiveTab] = useState("all");
@@ -64,6 +65,24 @@ export default function BestsellerSection() {
       image:
         "https://readdy.ai/api/search-image?query=Cream%20colored%20oversized%20cotton%20t-shirt%20on%20clean%20background%2C%20soft%20neutral%20tone%2C%20relaxed%20loose%20fit%2C%20premium%20quality%20fabric%2C%20modern%20casual%20style%2C%20comfortable%20streetwear%2C%20professional%20photography&width=300&height=400&seq=cream-over-001&orientation=portrait",
     },
+    {
+      id: 7,
+      name: "Cream Oversized Tee",
+      price: 36.99,
+      category: "tshirt",
+      type: "oversized",
+      image:
+        "https://veirdo.in/cdn/shop/files/b_0119493a-9927-4550-8323-baefe5f625c0.jpg?v=1759917565",
+    },
+    {
+      id: 8,
+      name: "Cream Oversized Tee",
+      price: 36.99,
+      category: "tshirt",
+      type: "oversized",
+      image:
+        "https://pronk.in/cdn/shop/files/49_2e3b3e43-98fa-44eb-a06a-6c6c79a43ffa.jpg?v=1708776622&width=1080",
+    },
   ];
 
   const filteredProducts = products.filter((product) => {
@@ -108,13 +127,19 @@ export default function BestsellerSection() {
   return (
     <section className="py-12 sm:py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-            Bestsellers
+        <div className="text mb-8 sm:mb-12">
+          <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+            Best Seller
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-            Our most loved pieces that define modern streetwear
-          </p>
+          <a
+            href="#"
+            className=" flex items-center gap-2 text-sm  text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+          >
+            View Collection
+            <ArrowRight className="w-5 h-5" />
+          </a>
+        </div>
         </div>
 
         {/* Filter Tabs */}
@@ -147,7 +172,7 @@ export default function BestsellerSection() {
         {/* Carousel Container */}
         {/* Products Grid */}
         <div
-          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-8"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-8"
           data-product-shop
         >
           {getCurrentProducts().map((product) => (
@@ -189,11 +214,11 @@ export default function BestsellerSection() {
           ))}
         </div>
 
-        <div className="text-center mt-8 sm:mt-12">
+        {/* <div className="text-center mt-8 sm:mt-12">
           <button className="bg-black text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded font-medium hover:bg-gray-800 transition-colors whitespace-nowrap cursor-pointer text-sm sm:text-base w-full sm:w-auto">
             View All Products
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
