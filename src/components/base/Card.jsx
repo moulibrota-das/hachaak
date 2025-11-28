@@ -7,11 +7,11 @@ function Card({ product }) {
     navigate(`/product/${product.id}`);
   };
   return (
-    <div key={product.id} className="group relative" onClick={handleClick}>
+    <div key={product.id} className="group relative max-w-60" onClick={handleClick}>
       <img
         alt={product.imageAlt}
         src={product.image}
-        className="aspect-3/4 w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75  lg:aspect-3/4"
+        className="aspect-3/4 w-full rounded-xl bg-gray-200 object-cover group-hover:opacity-75  lg:aspect-3/4"
       />
       <div className="mt-4 flex justify-between">
         <div>

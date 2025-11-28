@@ -28,11 +28,13 @@ export default function Header({ position = "fixed", sx = "" }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="shrink-0">
-            <img
-              src={isScrolled || position === "block" ? logo2 : logo2_white}
-              alt="Logo"
-              className="h-11 w-auto"
-            />
+            <a href="/">
+              <img
+                src={isScrolled || position === "block" ? logo2 : logo2_white}
+                alt="Logo"
+                className="h-11 w-auto"
+              />
+            </a>
           </div>
 
           {/* Right side icons */}

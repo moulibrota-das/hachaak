@@ -1,6 +1,7 @@
 import NotFound from "../pages/NotFound";
 import Home from "../pages/home/page";
 import ProductPage from "../pages/product/page";
+import ProductCollectionPage from "../pages/collection/page";
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
   {
     path: "/product/:id",
     element: <ProductPage />,
+  },
+  {
+    path: "/collection",
+    element: <ProductCollectionPage />,
   },
   {
     path: "*",

@@ -63,7 +63,7 @@ function NewarrivalSection({headerText = "New Arrivals"}) {
     },
   ];
   return (
-    <section className="py-12 sm:py-16  bg-white">
+    <section className="pb-10 sm:pb-12  bg-white ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -83,9 +83,9 @@ function NewarrivalSection({headerText = "New Arrivals"}) {
         <div className="relative">
           {/* Mobile: Horizontal Scroll */}
           <div className=" overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <div className="flex gap-8 pb-4">
+            <div className="flex gap-8 lg:gap-12 pb-4">
               {products.map((product) => (
-                <div key={product.id} className="flex-shrink-0 w-[240px] lg:w-[280px]">
+                <div key={product.id} className="flex-shrink-0 w-[200px] lg:w-[240px]">
                   <Card product={product} />
                 </div>
               ))}

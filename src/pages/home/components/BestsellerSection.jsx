@@ -112,34 +112,32 @@ export default function BestsellerSection() {
     return () => window.removeEventListener("resize", updateItemsPerSlide);
   }, []);
 
-
   useEffect(() => {
     // Reset to first slide when items per slide changes
     setCurrentSlide(0);
   }, [itemsPerSlide, activeTab]);
 
-
   const getCurrentProducts = () => {
     const start = currentSlide * itemsPerSlide;
-    return products
+    return products;
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-gray-50">
+    <section className="py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text mb-8 sm:mb-12">
           <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-            Best Seller
-          </h2>
-          <a
-            href="#"
-            className=" flex items-center gap-2 text-sm  text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
-          >
-            View Collection
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </div>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+              Best Seller
+            </h2>
+            <a
+              href="#"
+              className=" flex items-center gap-2 text-sm  text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
+            >
+              View Collection
+              <ArrowRight className="w-5 h-5" />
+            </a>
+          </div>
         </div>
 
         {/* Filter Tabs */}
@@ -172,44 +170,10 @@ export default function BestsellerSection() {
         {/* Carousel Container */}
         {/* Products Grid */}
         <div
-          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-8"
+          className="grid grid-cols-2 place-items-center sm:grid-cols-3  lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-8"
           data-product-shop
         >
           {getCurrentProducts().map((product) => (
-            // <div key={product.id} className="group cursor-pointer">
-            //   <div className="relative overflow-hidden rounded-lg bg-white aspect-[3/4] mb-3 sm:mb-4">
-            //     {product.badge && (
-            //       <div className="absolute top-3 left-3 z-10">
-            //         <span className="bg-black text-white px-2 py-1 text-xs font-medium rounded">
-            //           {product.badge}
-            //         </span>
-            //       </div>
-            //     )}
-            //     <img
-            //       src={product.image}
-            //       alt={product.name}
-            //       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-            //     />
-            //     <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-            //     {/* Quick Add Button */}
-            //     <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            //       <button className="w-full bg-white text-black py-2 px-4 rounded font-medium hover:bg-gray-100 transition-colors whitespace-nowrap text-sm sm:text-base">
-            //         Quick Add
-            //       </button>
-            //     </div>
-            //   </div>
-
-            //   <div className="space-y-1 sm:space-y-2">
-            //     <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{product.name}</h3>
-            //     <div className="flex items-center space-x-2">
-            //       <span className="text-base sm:text-lg font-bold text-gray-900">${product.price}</span>
-            //       {product.originalPrice && (
-            //         <span className="text-xs sm:text-sm text-gray-500 line-through">${product.originalPrice}</span>
-            //       )}
-            //     </div>
-            //   </div>
-            // </div>
             <Card product={product} />
           ))}
         </div>

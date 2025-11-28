@@ -10,31 +10,31 @@ function WideCard({ image, text }) {
     navigate(`/product/${product.id}`);
   };
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.unobserve(el); // fire once
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.2,
-      }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  // useEffect(() => {
+  //   const el = ref.current;
+  //   if (!el) return;
+  //   const obs = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((e) => {
+  //         if (e.isIntersecting) {
+  //           setInView(true);
+  //           obs.unobserve(el); // fire once
+  //         }
+  //       });
+  //     },
+  //     {
+  //       root: null,
+  //       threshold: 0.2,
+  //     }
+  //   );
+  //   obs.observe(el);
+  //   return () => obs.disconnect();
+  // }, []);
 
   return (
     <div
       ref={ref}
-      className="group relative max-w-7xl mx-auto lg:px-8"
+      className="pb-12 group relative max-w-7xl mx-auto lg:px-8"
       onClick={handleClick}
     >
       <img

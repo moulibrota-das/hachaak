@@ -6,6 +6,7 @@ import BestsellerSection from "./components/BestsellerSection";
 import FeaturesSection from "./components/FeaturesSection";
 import NewarrivalSection from "./components/NewarrivalSection";
 import WideCard from "../../components/base/WideCard";
+import BentoGrid from "../../components/base/BentoGrid";
 
 export default function Home() {
   return (
@@ -22,6 +23,15 @@ export default function Home() {
         />
         <NewarrivalSection headerText="Hoodies"/>
         {/* <FeaturesSection /> */}
+        {/* <WideCard
+          image="https://images.unsplash.com/photo-1542925554-2ec208930b5b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          text="Sample Text"
+        /> */}
+        <NewarrivalSection headerText="T-Shirts"/>
+        <BentoGrid
+          image="https://images.unsplash.com/photo-1542925554-2ec208930b5b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          text="Sample Text"
+        />
       </main>
       <Footer />
     </div>
