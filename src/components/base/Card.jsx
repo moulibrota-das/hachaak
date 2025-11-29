@@ -7,7 +7,11 @@ function Card({ product }) {
     navigate(`/product/${product.id}`);
   };
   return (
-    <div key={product.id} className="group relative max-w-60" onClick={handleClick}>
+    <div
+      key={product.id}
+      className="group relative max-w-60"
+      onClick={handleClick}
+    >
       <img
         alt={product.imageAlt}
         src={product.image}
@@ -23,7 +27,7 @@ function Card({ product }) {
           </h3>
           <p className="mt-1 text-sm text-gray-500">{product.color}</p>
         </div>
-        <p className="text-sm font-medium text-gray-900">{product.price}</p>
+        <p className="text-sm font-medium text-gray-900">₹{product.price}</p>
       </div>
     </div>
   );

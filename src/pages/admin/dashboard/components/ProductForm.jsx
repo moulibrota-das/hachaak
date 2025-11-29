@@ -8,6 +8,7 @@ const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 export default function ProductForm({ onSuccess, onCancel, initialData }) {
   const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -56,6 +57,7 @@ export default function ProductForm({ onSuccess, onCancel, initialData }) {
   useEffect(() => {
     if (initialData) {
       setName(initialData.name || "");
+      setPrice(initialData.price || "");
       setDescription(initialData.description || "");
       setCategories(
         Array.isArray(initialData.category) ? initialData.category : []
@@ -128,6 +130,11 @@ export default function ProductForm({ onSuccess, onCancel, initialData }) {
       setLoading(false);
       return;
     }
+    if (!price || isNaN(price) || Number(price) <= 0) {
+      setMessage({ type: "error", text: "Please enter a valid price" });
+      setLoading(false);
+      return;
+    }
     if (!categories || categories.length === 0) {
       setMessage({
         type: "error",
@@ -176,11 +183,12 @@ export default function ProductForm({ onSuccess, onCancel, initialData }) {
 
       const productData = {
         name,
+        price: Number(price),
         description,
         images: finalImages,
         size: sizeArr,
         color: colorArr,
-        category: categories
+        category: categories,
       };
 
       if (!initialData) {
@@ -257,13 +265,29 @@ export default function ProductForm({ onSuccess, onCancel, initialData }) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Name</label>
+          <label className="block text-sm font-medium mb-1">Product Name</label>
           <input
+            type="text"
+            className="w-full border rounded px-3 py-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
+            placeholder="e.g. Classic T-Shirt"
             disabled={loading}
-            className="w-full border rounded px-3 py-3 md:py-2"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Price</label>
+          <input
+            type="number"
+            className="w-full border rounded px-3 py-2"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="e.g. 29.99"
+            disabled={loading}
+            min="0"
+            step="0.01"
           />
         </div>
 

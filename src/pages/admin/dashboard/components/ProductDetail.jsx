@@ -88,6 +88,9 @@ export default function ProductDetail({ product, onBack, onEdit }) {
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+            <div className="text-xl font-semibold text-gray-900 mt-1">
+              ₹{product.price ? Number(product.price).toFixed(2) : "N/A"}
+            </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {getArray(product.category).map((cat, i) => (
                 <span

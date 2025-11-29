@@ -62,7 +62,7 @@ function ProductComponent({ product }) {
                 </button>
               </div>
               <p className="text-2xl font-semibold text-gray-900 mt-3">
-                ${product.price}
+                ₹{product.price}
               </p>
             </div>
 
@@ -103,7 +103,7 @@ function ProductComponent({ product }) {
                 {product.name}
               </h1>
               <p className="text-3xl font-semibold text-gray-900 mt-2">
-                ${product.price}
+                ₹{product.price}
               </p>
               <div className="flex items-center gap-3 mt-3">
                 <div className="flex items-center gap-2">
