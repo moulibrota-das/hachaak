@@ -1,27 +1,31 @@
-
+import { useNavigate } from "react-router-dom";
 export default function CategorySection() {
+  const navigate = useNavigate();
   const categories = [
     {
       id: 1,
-      name: 'Regular T-Shirts',
-      description: 'Classic fit for everyday comfort',
-      image: 'https://readdy.ai/api/search-image?query=Premium%20cotton%20t-shirt%20on%20clean%20white%20background%2C%20classic%20regular%20fit%2C%20high%20quality%20fabric%20texture%2C%20minimalist%20product%20photography%2C%20soft%20natural%20lighting%2C%20modern%20casual%20wear%2C%20comfortable%20everyday%20clothing%2C%20neutral%20colors%2C%20professional%20fashion%20photography&width=400&height=500&seq=tshirt-reg-001&orientation=portrait',
-      href: '/tshirts/regular'
+      name: "Regular T-Shirts",
+      description: "Classic fit for everyday comfort",
+      image:
+        "https://readdy.ai/api/search-image?query=Premium%20cotton%20t-shirt%20on%20clean%20white%20background%2C%20classic%20regular%20fit%2C%20high%20quality%20fabric%20texture%2C%20minimalist%20product%20photography%2C%20soft%20natural%20lighting%2C%20modern%20casual%20wear%2C%20comfortable%20everyday%20clothing%2C%20neutral%20colors%2C%20professional%20fashion%20photography&width=400&height=500&seq=tshirt-reg-001&orientation=portrait",
+      href: "/collection?category=tshirt",
     },
     {
       id: 2,
-      name: 'Oversized T-Shirts',
-      description: 'Relaxed fit for street style',
-      image: 'https://readdy.ai/api/search-image?query=Oversized%20cotton%20t-shirt%20on%20clean%20white%20background%2C%20relaxed%20loose%20fit%2C%20premium%20fabric%20quality%2C%20street%20style%20fashion%2C%20modern%20urban%20wear%2C%20comfortable%20oversized%20clothing%2C%20trendy%20casual%20style%2C%20professional%20product%20photography&width=400&height=500&seq=tshirt-over-001&orientation=portrait',
-      href: '/tshirts/oversized'
+      name: "Oversized T-Shirts",
+      description: "Relaxed fit for street style",
+      image:
+        "https://readdy.ai/api/search-image?query=Oversized%20cotton%20t-shirt%20on%20clean%20white%20background%2C%20relaxed%20loose%20fit%2C%20premium%20fabric%20quality%2C%20street%20style%20fashion%2C%20modern%20urban%20wear%2C%20comfortable%20oversized%20clothing%2C%20trendy%20casual%20style%2C%20professional%20product%20photography&width=400&height=500&seq=tshirt-over-001&orientation=portrait",
+      href: "/collection?category=tshirt",
     },
     {
       id: 3,
-      name: 'Hoodies',
-      description: 'Cozy warmth meets urban style',
-      image: 'https://readdy.ai/api/search-image?query=Premium%20cotton%20hoodie%20on%20clean%20white%20background%2C%20comfortable%20fit%2C%20high%20quality%20fabric%20texture%2C%20modern%20streetwear%20style%2C%20cozy%20warm%20clothing%2C%20urban%20fashion%2C%20soft%20natural%20lighting%2C%20professional%20product%20photography&width=400&height=500&seq=hoodie-001&orientation=portrait',
-      href: '/hoodies'
-    }
+      name: "Hoodies",
+      description: "Cozy warmth meets urban style",
+      image:
+        "https://readdy.ai/api/search-image?query=Premium%20cotton%20hoodie%20on%20clean%20white%20background%2C%20comfortable%20fit%2C%20high%20quality%20fabric%20texture%2C%20modern%20streetwear%20style%2C%20cozy%20warm%20clothing%2C%20urban%20fashion%2C%20soft%20natural%20lighting%2C%20professional%20product%20photography&width=400&height=500&seq=hoodie-001&orientation=portrait",
+      href: "/collection?category=hoodie",
+    },
   ];
 
   return (
@@ -36,7 +40,12 @@ export default function CategorySection() {
 
         <div className="grid grid-cols-3 gap-8 items-center justify-items-center">
           {categories.map((category) => (
-            <div key={category.id} className="group cursor-pointer w-32 lg:w-64" data-product-shop>
+            <div
+              key={category.id}
+              className="group cursor-pointer w-32 lg:w-64"
+              data-product-shop
+              onClick={() => navigate(category.href)}
+            >
               <div className="relative overflow-hidden rounded-lg bg-gray-100 aspect-[16/9] mb-4">
                 <img
                   src={category.image}

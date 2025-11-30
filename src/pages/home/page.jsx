@@ -21,13 +21,13 @@ export default function Home() {
           image="https://images.unsplash.com/photo-1542925554-2ec208930b5b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           text="Sample Text"
         />
-        <NewarrivalSection headerText="Hoodies"/>
+        <NewarrivalSection headerText="Hoodies" category="hoodie" />
         {/* <FeaturesSection /> */}
         {/* <WideCard
           image="https://images.unsplash.com/photo-1542925554-2ec208930b5b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           text="Sample Text"
         /> */}
-        <NewarrivalSection headerText="T-Shirts"/>
+        <NewarrivalSection headerText="T-Shirts" category="tshirt" />
         <BentoGrid
           image="https://images.unsplash.com/photo-1542925554-2ec208930b5b?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           text="Sample Text"

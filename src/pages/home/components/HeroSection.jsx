@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/base/Button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -13,6 +14,7 @@ const heroSlides = [
       "https://plus.unsplash.com/premium_photo-1690341214258-18cb88438805?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     primaryButton: "Shop Now",
     secondaryButton: "View Collection",
+    link: "/collection",
   },
   {
     id: 2,
@@ -24,6 +26,7 @@ const heroSlides = [
       "https://plus.unsplash.com/premium_photo-1690349404248-3ddd9be40eb1?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     primaryButton: "Shop Now",
     secondaryButton: "Learn More",
+    link: "/collection?category=tshirt",
   },
   {
     id: 3,
@@ -35,10 +38,12 @@ const heroSlides = [
       "https://plus.unsplash.com/premium_photo-1688497830977-f9ab9f958ca7?q=80&w=751&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     primaryButton: "Shop Now",
     secondaryButton: "Size Guide",
+    link: "/collection?category=hoodie",
   },
 ];
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -91,6 +96,7 @@ export default function HeroSection() {
               variant="primary"
               size="md"
               className="absolute bottom-15 rounded-lg text-black hover:bg-gray-100 whitespace-nowrap cursor-pointer  sm:w-auto"
+              onClick={() => navigate(slide.link)}
             >
               {slide.primaryButton}
             </Button>

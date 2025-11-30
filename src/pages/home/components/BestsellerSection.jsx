@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Card from "../../../components/base/Card";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function BestsellerSection() {
   const [activeTab, setActiveTab] = useState("all");
@@ -130,13 +131,13 @@ export default function BestsellerSection() {
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
               Best Seller
             </h2>
-            <a
-              href="#"
+            <Link
+              to="/collection"
               className=" flex items-center gap-2 text-sm  text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
             >
               View Collection
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </div>
 

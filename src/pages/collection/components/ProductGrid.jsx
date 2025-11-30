@@ -1,89 +1,10 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Filter, X } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../../components/base/Card";
-// Sample product data
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Classic White Tee",
-    category: "tshirt",
-    price: 29.99,
-    size: ["S", "M", "L", "XL"],
-    color: "White",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
-  },
-  {
-    id: 2,
-    name: "Black Graphic Tee",
-    category: "tshirt",
-    price: 34.99,
-    size: ["M", "L", "XL"],
-    color: "Black",
-    image:
-      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop",
-  },
-  {
-    id: 3,
-    name: "Navy Hoodie",
-    category: "hoodie",
-    price: 59.99,
-    size: ["S", "M", "L", "XL", "XXL"],
-    color: "Navy",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
-  },
-  {
-    id: 4,
-    name: "Grey Zip Hoodie",
-    category: "hoodie",
-    price: 64.99,
-    size: ["M", "L", "XL"],
-    color: "Grey",
-    image:
-      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&h=400&fit=crop",
-  },
-  {
-    id: 5,
-    name: "Blue Crew Tee",
-    category: "tshirt",
-    price: 32.99,
-    size: ["S", "M", "L"],
-    color: "Blue",
-    image:
-      "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=400&fit=crop",
-  },
-  {
-    id: 6,
-    name: "Black Pullover Hoodie",
-    category: "hoodie",
-    price: 54.99,
-    size: ["S", "M", "L", "XL"],
-    color: "Black",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
-  },
-  {
-    id: 7,
-    name: "Red Graphic Tee",
-    category: "tshirt",
-    price: 36.99,
-    size: ["M", "L", "XL"],
-    color: "Red",
-    image:
-      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop",
-  },
-  {
-    id: 8,
-    name: "White Hoodie",
-    category: "hoodie",
-    price: 62.99,
-    size: ["S", "M", "L", "XL", "XXL"],
-    color: "White",
-    image:
-      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&h=400&fit=crop",
-  },
-];
+import supabase from "../../../lib/supabaseClient";
+// Sample product data removed
+const PRODUCTS = [];
 
 const FilterSection = ({
   title,
@@ -112,6 +33,9 @@ const FilterSection = ({
 
 export default function ProductGrid() {
   const [showFilters, setShowFilters] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
@@ -119,7 +43,44 @@ export default function ProductGrid() {
 
   const categories = ["tshirt", "hoodie"];
   const sizes = ["S", "M", "L", "XL", "XXL"];
-  const colors = [...new Set(PRODUCTS.map((p) => p.color))];
+  const colors = [...new Set(products.map((p) => p.color).flat())];
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("Products")
+      .select("*")
+      .eq("isActive", true);
+
+    if (error) {
+      console.error("Error fetching products:", error);
+    } else {
+      // Map Supabase data to component format
+      const formattedProducts = data.map((p) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category || [],
+        price: p.price,
+        size: p.size || [],
+        color: p.color || [],
+        image: p.images && p.images.length > 0 ? p.images[0] : null,
+        images: p.images || [],
+      }));
+      setProducts(formattedProducts);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      setSelectedCategories([categoryParam]);
+    }
+  }, [searchParams]);
 
   const toggleFilter = (selected, setSelected, value) => {
     setSelected((prev) =>
@@ -136,15 +97,20 @@ export default function ProductGrid() {
   };
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = PRODUCTS.filter((product) => {
+    let filtered = products.filter((product) => {
       const categoryMatch =
         selectedCategories.length === 0 ||
-        selectedCategories.includes(product.category);
+        (Array.isArray(product.category)
+          ? product.category.some((c) => selectedCategories.includes(c))
+          : selectedCategories.includes(product.category));
       const sizeMatch =
         selectedSizes.length === 0 ||
         selectedSizes.some((size) => product.size.includes(size));
       const colorMatch =
-        selectedColors.length === 0 || selectedColors.includes(product.color);
+        selectedColors.length === 0 ||
+        (Array.isArray(product.color)
+          ? product.color.some((c) => selectedColors.includes(c))
+          : selectedColors.includes(product.color));
       return categoryMatch && sizeMatch && colorMatch;
     });
 
@@ -156,7 +122,7 @@ export default function ProductGrid() {
     });
 
     return sorted;
-  }, [selectedCategories, selectedSizes, selectedColors, sortBy]);
+  }, [products, selectedCategories, selectedSizes, selectedColors, sortBy]);
 
   const activeFilterCount =
     selectedCategories.length + selectedSizes.length + selectedColors.length;
@@ -251,7 +217,9 @@ export default function ProductGrid() {
 
           {/* Product Grid */}
           <main className="flex-1">
-            {filteredAndSortedProducts.length > 0 ? (
+            {loading ? (
+              <div className="text-center py-12">Loading products...</div>
+            ) : filteredAndSortedProducts.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredAndSortedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />

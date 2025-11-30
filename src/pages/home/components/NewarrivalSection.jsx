@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import Card from "../../../components/base/Card";
 
-function NewarrivalSection({headerText = "New Arrivals"}) {
+function NewarrivalSection({ headerText = "New Arrivals", category }) {
+  const link = category ? `/collection?category=${category}` : "/collection";
   const products = [
     {
       id: 1,
@@ -70,13 +72,13 @@ function NewarrivalSection({headerText = "New Arrivals"}) {
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
             {headerText}
           </h2>
-          <a
-            href="#"
+          <Link
+            to={link}
             className=" flex items-center gap-2 text-sm  text-indigo-600 font-medium hover:text-indigo-700 transition-colors"
           >
             View Collection
             <ArrowRight className="w-5 h-5" />
-          </a>
+          </Link>
         </div>
 
         {/* Products Grid/Scroll */}
@@ -85,7 +87,10 @@ function NewarrivalSection({headerText = "New Arrivals"}) {
           <div className=" overflow-x-auto scrollbar-hide -mx-4 px-4">
             <div className="flex gap-8 lg:gap-12 pb-4">
               {products.map((product) => (
-                <div key={product.id} className="flex-shrink-0 w-[200px] lg:w-[240px]">
+                <div
+                  key={product.id}
+                  className="flex-shrink-0 w-[200px] lg:w-[240px]"
+                >
                   <Card product={product} />
                 </div>
               ))}
