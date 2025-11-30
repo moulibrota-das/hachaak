@@ -1,33 +1,83 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../../components/feature/Header";
 import ProductComponent from "./components/ProductComponent";
+import supabase from "../../lib/supabaseClient";
 
 const ProductPage = () => {
-  const product = {
-    name: "Basic Tee",
-    price: 35,
-    rating: 3.9,
-    reviews: 512,
-    colors: [
-      { name: "black", value: "#000000" },
-      { name: "gray", value: "#6B7280" },
-    ],
-    sizes: ["XXS", "XS", "S", "M", "L", "XL"],
-    images: [
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop",
-      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&h=1000&fit=crop",
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&h=1000&fit=crop",
-    ],
-    description: [
-      "The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee it's own look.",
-      "Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.",
-    ],
-    features: [
-      "Only the best materials",
-      "Ethically and locally made",
-      "Pre-washed and pre-shrunk",
-      "Machine wash cold with similar colors",
-    ],
-  };
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!id) return;
+
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("Products")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching product:", error);
+        setError("Product not found");
+      } else {
+        // Map Supabase data to component format
+        const formattedProduct = {
+          name: data.name,
+          price: data.price,
+          rating: 4.5, // Default rating as it's not in DB yet
+          reviews: 120, // Default reviews
+          colors:
+            data.color && Array.isArray(data.color)
+              ? data.color.map((c) => ({ name: c, value: c })) // Using name as value for now
+              : [],
+          sizes: data.size || [],
+          images: data.images || [],
+          description: data.description
+            ? data.description.split("\n").filter((p) => p.trim() !== "")
+            : [],
+          features: [
+            "Premium quality material",
+            "Comfortable fit",
+            "Durable stitching",
+            "Machine washable",
+          ], // Default features
+        };
+        setProduct(formattedProduct);
+      }
+      setLoading(false);
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <>
+        <Header position="block" />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-xl">Loading product...</div>
+        </div>
+      </>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <>
+        <Header position="block" />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-xl text-red-600">
+            {error || "Product not found"}
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

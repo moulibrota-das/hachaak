@@ -1,69 +1,44 @@
 import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../../components/base/Card";
+import supabase from "../../../lib/supabaseClient";
 
 function NewarrivalSection({ headerText = "New Arrivals", category }) {
   const link = category ? `/collection?category=${category}` : "/collection";
-  const products = [
-    {
-      id: 1,
-      name: "Essential Black Tee",
-      price: 29.99,
-      originalPrice: 39.99,
-      category: "tshirt",
-      type: "regular",
-      image:
-        "https://readdy.ai/api/search-image?query=Black%20cotton%20t-shirt%20on%20clean%20white%20background%2C%20essential%20basic%20design%2C%20premium%20fabric%20quality%2C%20classic%20regular%20fit%2C%20minimalist%20style%2C%20everyday%20casual%20wear%2C%20high%20quality%20product%20photography%2C%20soft%20natural%20lighting&width=300&height=400&seq=black-tee-001&orientation=portrait",
-      badge: "Bestseller",
-    },
-    {
-      id: 2,
-      name: "Oversized White Tee",
-      price: 34.99,
-      category: "tshirt",
-      type: "oversized",
-      image:
-        "https://readdy.ai/api/search-image?query=White%20oversized%20cotton%20t-shirt%20on%20clean%20background%2C%20relaxed%20loose%20fit%2C%20premium%20quality%20fabric%2C%20street%20style%20fashion%2C%20modern%20urban%20wear%2C%20comfortable%20oversized%20clothing%2C%20professional%20product%20photography&width=300&height=400&seq=white-over-001&orientation=portrait",
-      badge: "New",
-    },
-    {
-      id: 3,
-      name: "Classic Gray Hoodie",
-      price: 59.99,
-      category: "hoodie",
-      image:
-        "https://readdy.ai/api/search-image?query=Gray%20cotton%20hoodie%20on%20clean%20white%20background%2C%20classic%20comfortable%20fit%2C%20premium%20fabric%20texture%2C%20modern%20streetwear%20style%2C%20cozy%20warm%20clothing%2C%20urban%20fashion%2C%20soft%20natural%20lighting%2C%20professional%20photography&width=300&height=400&seq=gray-hoodie-001&orientation=portrait",
-      badge: "Popular",
-    },
-    {
-      id: 4,
-      name: "Vintage Navy Tee",
-      price: 32.99,
-      category: "tshirt",
-      type: "regular",
-      image:
-        "https://readdy.ai/api/search-image?query=Navy%20blue%20cotton%20t-shirt%20on%20clean%20background%2C%20vintage%20inspired%20design%2C%20premium%20fabric%20quality%2C%20classic%20regular%20fit%2C%20retro%20casual%20style%2C%20comfortable%20everyday%20wear%2C%20professional%20product%20photography&width=300&height=400&seq=navy-tee-001&orientation=portrait",
-    },
-    {
-      id: 5,
-      name: "Black Oversized Hoodie",
-      price: 69.99,
-      category: "hoodie",
-      type: "oversized",
-      image:
-        "https://readdy.ai/api/search-image?query=Black%20oversized%20hoodie%20on%20clean%20white%20background%2C%20relaxed%20comfortable%20fit%2C%20premium%20cotton%20fabric%2C%20street%20style%20fashion%2C%20modern%20urban%20wear%2C%20cozy%20warm%20clothing%2C%20professional%20product%20photography&width=300&height=400&seq=black-hoodie-001&orientation=portrait",
-      badge: "Limited",
-    },
-    {
-      id: 6,
-      name: "Cream Oversized Tee",
-      price: 36.99,
-      category: "tshirt",
-      type: "oversized",
-      image:
-        "https://readdy.ai/api/search-image?query=Cream%20colored%20oversized%20cotton%20t-shirt%20on%20clean%20background%2C%20soft%20neutral%20tone%2C%20relaxed%20loose%20fit%2C%20premium%20quality%20fabric%2C%20modern%20casual%20style%2C%20comfortable%20streetwear%2C%20professional%20photography&width=300&height=400&seq=cream-over-001&orientation=portrait",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [category]);
+
+  const fetchProducts = async () => {
+    let query = supabase
+      .from("Products")
+      .select("*")
+      .eq("isActive", true)
+      .limit(6);
+
+    if (category) {
+      query = query.contains("category", [category]);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching products:", error);
+    } else {
+      const formattedProducts = data.map((p) => ({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        category: p.category || [],
+        image: p.images && p.images.length > 0 ? p.images[0] : null,
+        // Add other fields if needed by Card component
+      }));
+      setProducts(formattedProducts);
+    }
+  };
   return (
     <section className="pb-10 sm:pb-12  bg-white ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
