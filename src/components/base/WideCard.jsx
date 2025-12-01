@@ -34,7 +34,7 @@ function WideCard({ image, text }) {
   return (
     <div
       ref={ref}
-      className="pb-12 group relative max-w-7xl mx-auto lg:px-8"
+      className="pb-12 px-4 group relative max-w-7xl mx-auto lg:px-8"
       onClick={handleClick}
     >
       <img

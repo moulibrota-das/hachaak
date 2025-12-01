@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Star, ChevronRight } from "lucide-react";
+import { Star, ChevronRight, ChevronLeft, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function ProductComponent({ product }) {
   const [selectedColor, setSelectedColor] = useState("black");
   const [selectedSize, setSelectedSize] = useState("S");
   const [mainImage, setMainImage] = useState(0);
+  const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
 
   const renderStars = (rating) => {
     return Array(5)
@@ -21,23 +23,66 @@ function ProductComponent({ product }) {
       ));
   };
 
+  const handleBuyNow = () => {
+    const message = `I want to buy ${product.name}\nColor: ${selectedColor}\nSize: ${selectedSize}`;
+    const url = `https://wa.me/+918584075771?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(url, "_blank");
+  };
+
+  const nextImage = () => {
+    setMainImage((prev) => (prev + 1) % product.images.length);
+  };
+
+  const prevImage = () => {
+    setMainImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
+  };
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative">
+      {/* Size Chart Modal */}
+      {isSizeChartOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto relative">
+            <button
+              onClick={() => setIsSizeChartOpen(false)}
+              className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+            >
+              <X className="w-6 h-6 text-gray-600" />
+            </button>
+            <div className="p-4">
+              <img
+                src="/size_chart.jpeg"
+                alt="Size Chart"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Breadcrumb - Mobile */}
       <nav className="lg:hidden px-4 py-3 text-sm">
         <div className="flex items-center gap-2 text-gray-600">
-          <span>Clothing</span>
+          <Link to="/">Home</Link>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-900">Basic Tee</span>
+          <span>Products</span>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-gray-900 truncate">{product.name}</span>
         </div>
       </nav>
 
       {/* Breadcrumb - Desktop */}
-      <nav className="hidden lg:block px-8 py-4 text-sm">
+      <nav className="hidden lg:block ml-16 px-8 py-4 text-sm">
         <div className="flex items-center gap-2 text-gray-600 max-w-7xl mx-auto">
-          <span>Clothing</span>
+          <Link to="/" className="hover:text-gray-900">
+            Home
+          </Link>
           <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-900">Basic Tee</span>
+          <span>Products</span>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-gray-900">{product.name}</span>
         </div>
       </nav>
 
@@ -47,7 +92,7 @@ function ProductComponent({ product }) {
           <div className="lg:sticky lg:top-8">
             {/* Mobile Header */}
             <div className="lg:hidden mb-4">
-              <h1 className="text-2xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-gray-700">
                 {product.name}
               </h1>
               <div className="flex items-center justify-between mt-2">
@@ -57,22 +102,48 @@ function ProductComponent({ product }) {
                     {renderStars(product.rating)}
                   </div>
                 </div>
-                <button className="text-indigo-600 text-sm font-medium">
+                <button className="text-orange-600 text-sm font-medium">
                   See all {product.reviews} reviews
                 </button>
               </div>
-              <p className="text-2xl font-semibold text-gray-900 mt-3">
-                ₹{product.price}
+              <p className="text-3xl font-semibold text-gray-900 mt-3 flex items-center gap-3">
+                <span>₹{product.price}</span>
+                <span className="text-gray-500 line-through text-xl">
+                  ₹{Math.round(product.price / 0.8)}
+                </span>
+                <span className="text-green-600 text-lg font-medium">
+                  (20% OFF)
+                </span>
               </p>
             </div>
 
-            {/* Main Image */}
-            <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-4">
+            {/* Main Image with Carousel */}
+            <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-4 group">
               <img
                 src={product.images[mainImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
+
+              {/* Carousel Arrows */}
+              {product.images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100 lg:opacity-0 lg:group-hover:opacity-100 max-lg:opacity-100"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-gray-900" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100 lg:opacity-0 lg:group-hover:opacity-100 max-lg:opacity-100"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-6 h-6 text-gray-900" />
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Thumbnail Images - Desktop */}
@@ -82,7 +153,7 @@ function ProductComponent({ product }) {
                   key={idx}
                   onClick={() => setMainImage(idx)}
                   className={`relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden ${
-                    mainImage === idx ? "ring-2 ring-indigo-600" : ""
+                    mainImage === idx ? "ring-2 ring-orange-600" : ""
                   }`}
                 >
                   <img
@@ -99,12 +170,9 @@ function ProductComponent({ product }) {
           <div className="mt-8 lg:mt-0">
             {/* Desktop Header */}
             <div className="hidden lg:block mb-6">
-              <h1 className="text-3xl font-semibold text-gray-900">
+              <h1 className="text-2xl font-semibold text-gray-700">
                 {product.name}
               </h1>
-              <p className="text-3xl font-semibold text-gray-900 mt-2">
-                ₹{product.price}
-              </p>
               <div className="flex items-center gap-3 mt-3">
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-medium">{product.rating}</span>
@@ -112,10 +180,19 @@ function ProductComponent({ product }) {
                     {renderStars(product.rating)}
                   </div>
                 </div>
-                <button className="text-indigo-600 text-sm font-medium hover:text-indigo-700">
+                <button className="text-orange-600 text-sm font-medium hover:text-orange-700">
                   See all {product.reviews} reviews
                 </button>
               </div>
+              <p className="text-4xl font-semibold text-gray-900 mt-2 flex items-center gap-4">
+                <span>₹{product.price}</span>
+                <span className="text-gray-500 line-through text-2xl">
+                  ₹{Math.round(product.price / 0.8)}
+                </span>
+                <span className="text-green-600 text-xl font-medium">
+                  (20% OFF)
+                </span>
+              </p>
             </div>
 
             {/* Color Selection */}
@@ -142,7 +219,10 @@ function ProductComponent({ product }) {
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                <button className="text-sm text-indigo-600 font-medium hover:text-indigo-700">
+                <button
+                  onClick={() => setIsSizeChartOpen(true)}
+                  className="text-sm text-orange-600 font-medium hover:text-orange-700"
+                >
                   See sizing chart
                 </button>
               </div>
@@ -151,9 +231,9 @@ function ProductComponent({ product }) {
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`py-3 px-4 text-sm font-medium rounded-md border ${
+                    className={`py-2 px-3 lg:py-3 lg:px-4 text-sm font-medium rounded-md border ${
                       selectedSize === size
-                        ? "bg-indigo-600 text-white border-indigo-600"
+                        ? "bg-orange-600 text-white border-orange-600"
                         : "bg-white text-gray-900 border-gray-300 hover:border-gray-400"
                     }`}
                   >
@@ -163,9 +243,12 @@ function ProductComponent({ product }) {
               </div>
             </div>
 
-            {/* Add to Cart Button */}
-            <button className="w-full bg-indigo-600 text-white py-4 px-6 rounded-md font-medium text-base hover:bg-indigo-700 transition-colors mb-8">
-              Add to cart
+            {/* Buy Now Button */}
+            <button
+              onClick={handleBuyNow}
+              className="w-full bg-orange-600 text-white py-4 px-6 rounded-md font-medium text-base hover:bg-orange-700 transition-colors mb-8"
+            >
+              Buy Now
             </button>
 
             {/* Description */}
@@ -196,56 +279,6 @@ function ProductComponent({ product }) {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Additional Info Cards - Desktop */}
-            <div className="hidden lg:grid lg:grid-cols-2 gap-4">
-              <div className="border border-gray-200 rounded-lg p-6 text-center">
-                <div className="w-10 h-10 bg-gray-100 rounded-full mx-auto mb-3 flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-gray-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h4 className="text-sm font-medium text-gray-900 mb-1">
-                  International delivery
-                </h4>
-                <p className="text-xs text-gray-600">
-                  Get your order in 2 years
-                </p>
-              </div>
-              <div className="border border-gray-200 rounded-lg p-6 text-center">
-                <div className="w-10 h-10 bg-gray-100 rounded-full mx-auto mb-3 flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-gray-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h4 className="text-sm font-medium text-gray-900 mb-1">
-                  Loyalty rewards
-                </h4>
-                <p className="text-xs text-gray-600">
-                  Don't look at other tees
-                </p>
-              </div>
             </div>
           </div>
         </div>

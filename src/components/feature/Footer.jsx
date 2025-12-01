@@ -1,4 +1,5 @@
 import logo2 from "../../../public/logo2.png";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -41,36 +42,36 @@ export default function Footer() {
             <h4 className="font-semibold text-gray-900 mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/shop"
+                <Link
+                  to="/collection"
                   className="text-gray-600 hover:text-black cursor-pointer"
                 >
                   Shop All
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/tshirts"
+                <Link
+                  to="/collection?category=tshirt"
                   className="text-gray-600 hover:text-black cursor-pointer"
                 >
                   T-Shirts
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/hoodies"
+                <Link
+                  to="/collection?category=hoodie"
                   className="text-gray-600 hover:text-black cursor-pointer"
                 >
                   Hoodies
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/oversized"
+                <Link
+                  to="/collection?category=oversized"
                   className="text-gray-600 hover:text-black cursor-pointer"
                 >
                   Oversized
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
